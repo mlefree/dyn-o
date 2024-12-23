@@ -1,0 +1,20 @@
+name: dev
+services:
+
+  dyn-o:
+    build:
+      context: .
+      dockerfile: node.Dockerfile
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3051/v1/check-and-update" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "3051:3051"
+    environment:
+      NODE_ENV: "development"
+      IS_TESTED: false
+      TRACE: true
+      TRACE_CONSOLE_LEVEL: "info"
+      TRACE_LOG_LEVEL: "info"

@@ -1,0 +1,42 @@
+{
+  "name": "dyn.o",
+  "version": "0.0.1",
+  "description": "node dynHost",
+  "main": "app.js",
+  "author": "contact@mle",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "scripts": {
+    "_clean": "rm -rf .gen .logs .nyc_output node_modules && npm i",
+    "bump": "npm version patch --no-git-tag-version",
+    "test": "npm run test-mocha-unit",
+    "start": "npm run start-node",
+    "start-in-docker": "node app.js",
+    "start-node": "node app.js",
+    "test-mocha-unit": "env NODE_ENV=test nyc --reporter=text mocha \"./app/**/*.spec.js\" --exit",
+    "test-mocha-integration": "env NODE_ENV=test nyc --reporter=text mocha \"./specs/**/*.spec.js\" --exit",
+    "test-mocha-all": "npm run test-mocha-unit && npm run test-mocha-integration"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "compression": "^1.7.4",
+    "dotenv": "^8.2.0",
+    "express": "^5.0.1",
+    "mle-tools-node": "^1.11.1",
+    "morgan": "^1.10.0",
+    "node-dig-dns": "^0.3.3",
+    "server-timing": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "chai-spies": "^1.0.0",
+    "eslint": "^7.6.0",
+    "mocha": "^10.2.0",
+    "nyc": "^14.1.1",
+    "supertest": "^3.4.2"
+  }
+}

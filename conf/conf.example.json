@@ -1,0 +1,10 @@
+{
+  "domains": [
+    {
+      "domain": "test.abc.com",
+      "ip": "1.1.1.1",
+      "username": "aaaa",
+      "password": "bbbb"
+    }
+  ]
+}
