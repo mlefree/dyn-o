@@ -11,7 +11,7 @@
   "scripts": {
     "_clean": "rm -rf .gen .logs .nyc_output node_modules && npm i",
     "bump": "npm version patch --no-git-tag-version",
-    "test": "npm run test-mocha-unit",
+    "test": "npm run test-mocha-integration",
     "start": "npm run start-node",
     "start-in-docker": "node app.js",
     "start-node": "node app.js",
