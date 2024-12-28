@@ -48,7 +48,7 @@ class AdminController extends AbstractController {
       return done;
     }
 
-    logger.info(`Starting DynHost updates check with IP: ${currentIp}`);
+    logger.info(`dyn-o check IP: ${currentIp}`);
 
     try {
       const data = fs.readFileSync(config.deploy.confFile, 'utf8');
@@ -82,15 +82,21 @@ class AdminController extends AbstractController {
       return done;
     }
 
-    logger.info(`Starting DynHost updates check with IP: ${currentIp}`);
+    logger.info(`dyn-o update with IP: ${currentIp}`);
 
     try {
       const data = fs.readFileSync(config.deploy.confFile, 'utf8');
       const configFile = JSON.parse(data);
+
+      const probeIsAlive = await AdminController.fetchProbeIsAlive(configFile.probe);
+      if (probeIsAlive) {
+        logger.info('Probe is alive, no need to update dyn-o');
+        return done;
+      }
+
       done.domains = configFile.domains.length;
       for (const domainConfig of configFile.domains) {
         const { domain, username, password } = domainConfig;
-
         const ovhIp = await AdminController.getOvhCurrentIp(domain, username, password);
         if (ovhIp === currentIp) {
           done.all = false;
@@ -120,6 +126,19 @@ class AdminController extends AbstractController {
       logger.error('Failed to fetch IP address:', error);
       return null;
     }
+  }
+
+  static async fetchProbeIsAlive (probeUrl) {
+    // const probeUrl = config.deploy.probeUrl;
+    try {
+      const response = await axios.get(probeUrl);
+      if (response && response.status < 400) {
+        return true;
+      }
+    } catch (error) {
+      logger.error('Failed to fetch probe:', probeUrl, error);
+    }
+    return false;
   }
 
   static async getOvhCurrentIp (domain, username, password) {

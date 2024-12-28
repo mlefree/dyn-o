@@ -20,7 +20,7 @@ describe('as Administrator', () => {
       .expect('Content-Type', /application\/json/)
       .expect(200);
 
-    expect(res.body.done.ok).to.eq(true);
+    expect(res.body.done.ok).to.eq(false);
   });
 
 });
